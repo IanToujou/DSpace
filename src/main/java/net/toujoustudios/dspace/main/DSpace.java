@@ -4,6 +4,7 @@ import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.toujoustudios.dspace.config.Config;
+import org.yaml.snakeyaml.Yaml;
 
 import javax.security.auth.login.LoginException;
 
@@ -16,13 +17,14 @@ import javax.security.auth.login.LoginException;
 public class DSpace {
 
     private JDABuilder builder;
+    private final Config config = Config.getFile("config.yml");
 
     public void build() {
 
-        builder = JDABuilder.createDefault(Config.TOKEN);
+        builder = JDABuilder.createDefault(config.getString("keys.token"));
 
         builder.setBulkDeleteSplittingEnabled(false);
-        builder.setActivity(Activity.streaming("/help - Running DSpace " + Config.BOT_VERSION, "https://twitch.tv/iantoujou"));
+        builder.setActivity(Activity.streaming("/help - Running " + config.getString("general.name") + " " + config.getString("general.version"), "https://twitch.tv/iantoujou"));
 
         builder.enableIntents(GatewayIntent.GUILD_MEMBERS);
         builder.enableIntents(GatewayIntent.GUILD_PRESENCES);

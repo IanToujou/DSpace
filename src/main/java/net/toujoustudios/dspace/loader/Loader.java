@@ -1,5 +1,6 @@
 package net.toujoustudios.dspace.loader;
 
+import net.toujoustudios.dspace.config.Config;
 import net.toujoustudios.dspace.main.Main;
 
 /**
@@ -20,7 +21,11 @@ public class Loader {
 
     }
 
-    private static void preInitialize() {}
+    private static void preInitialize() {
+
+        new Config("config.yml");
+
+    }
 
     private static void initialize() {
         Main.getBot().build();
