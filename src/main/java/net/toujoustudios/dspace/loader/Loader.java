@@ -22,9 +22,7 @@ public class Loader {
     }
 
     private static void preInitialize() {
-
         new Config("config.yml");
-
     }
 
     private static void initialize() {

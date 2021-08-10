@@ -1,8 +1,10 @@
 package net.toujoustudios.dspace.config;
 
+import net.toujoustudios.dspace.log.LogLevel;
+import net.toujoustudios.dspace.log.Logger;
 import org.yaml.snakeyaml.Yaml;
 
-import java.io.InputStream;
+import java.io.*;
 import java.util.HashMap;
 
 /**
@@ -13,76 +15,68 @@ import java.util.HashMap;
  */
 public class Config {
 
-    private HashMap<String, Object> content;
     private static final HashMap<String, Config> files = new HashMap<>();
+    private HashMap<String, Object> content;
 
-    private String fileName;
+    public Config(String filename) {
 
-    public Config(String fileName) {
-        Yaml yaml = new Yaml();
-        InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(fileName);
-        content = yaml.load(inputStream);
-        files.put(fileName, this);
+        try {
+            InputStream inputStream = new FileInputStream("src/main/resources/" + filename);
+            Yaml yaml = new Yaml();
+            content = yaml.load(inputStream);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        files.put(filename, this);
+        Logger.log(LogLevel.INFORMATION, "Configuration file " + filename + " loaded.");
+
+    }
+
+    public void printContent() {
+        for(String name : content.keySet()) {
+            String value = content.get(name).toString();
+            System.out.println(name + " => " + value);
+        }
     }
 
     public String getString(String key) {
         return (String) content.getOrDefault(key, null);
     }
 
-    public boolean getBoolean(String key) {
-        return (boolean) content.getOrDefault(key, false);
+    public int getInteger(String key) { return (int) content.getOrDefault(key, 0); }
+
+    private static HashMap<String, Object> readFile(String filename) {
+
+        HashMap<String, Object> map = new HashMap<>();
+
+        try {
+
+            BufferedReader reader = new BufferedReader(new FileReader("src/main/resources/" + filename));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] content = line.split(": ");
+                if(content.length == 2) {
+                    String key = content[0];
+                    String value = content[1].replaceAll("\"", "");
+                    map.put(key, value);
+                }
+            }
+
+        } catch(IOException exception) {
+            exception.printStackTrace();
+        }
+
+        return map;
+
     }
 
-    public int getInteger(String key) {
-        return (int) content.getOrDefault(key, 0);
-    }
-
-    public double getDouble(String key) {
-        return (double) content.getOrDefault(key, 0);
-    }
-
-    public float getFloat(String key) {
-        return (float) content.getOrDefault(key, 0f);
-    }
-
-    public long getLong(String key) {
-        return (long) content.getOrDefault(key, 0L);
-    }
-
-    public short getShort(String key) {
-        return (short) content.getOrDefault(key, 0);
-    }
-
-    public Object getObject(String key) {
-        return content.getOrDefault(key, 0);
-    }
-
-    public String getFileName() {
-        return fileName;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
-
-    public static Config getFile(String file) {
-        return files.get(file);
+    public static Config getFile(String filename) {
+        return files.getOrDefault(filename, null);
     }
 
     public static Config getDefault() {
-        return files.get("config.yml");
-    }
-
-    public static HashMap<String, Config> getFiles() {
-        return files;
-    }
-
-    public HashMap<String, Object> getContent() {
-        return content;
-    }
-
-    public void setContent(HashMap<String, Object> content) {
-        this.content = content;
+        return getFile("config.yml");
     }
 
 }

@@ -4,6 +4,8 @@ import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.toujoustudios.dspace.config.Config;
+import net.toujoustudios.dspace.log.LogLevel;
+import net.toujoustudios.dspace.log.Logger;
 import org.yaml.snakeyaml.Yaml;
 
 import javax.security.auth.login.LoginException;
@@ -17,9 +19,10 @@ import javax.security.auth.login.LoginException;
 public class DSpace {
 
     private JDABuilder builder;
-    private final Config config = Config.getFile("config.yml");
 
     public void build() {
+
+        Config config = Config.getDefault();
 
         builder = JDABuilder.createDefault(config.getString("keys.token"));
 
@@ -32,13 +35,11 @@ public class DSpace {
     }
 
     public void start() {
-
         try {
             builder.build();
         } catch (LoginException exception) {
             exception.printStackTrace();
         }
-
     }
 
 }
