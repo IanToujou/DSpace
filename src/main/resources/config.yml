@@ -1,4 +1,6 @@
-bot.name: "DSpace"
-bot.version: "V1.0.0"
+### General Settings ###
+bot.name: "DSpace" # The name of the Discord bot
+bot.version: "V1.0.0" # The version of the Discord bot
 
-keys.token: ""
+### Keys ###
+keys.token: "" # The bot token
