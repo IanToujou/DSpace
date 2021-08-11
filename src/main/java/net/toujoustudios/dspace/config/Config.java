@@ -33,19 +33,6 @@ public class Config {
 
     }
 
-    public void printContent() {
-        for(String name : content.keySet()) {
-            String value = content.get(name).toString();
-            System.out.println(name + " => " + value);
-        }
-    }
-
-    public String getString(String key) {
-        return (String) content.getOrDefault(key, null);
-    }
-
-    public int getInteger(String key) { return (int) content.getOrDefault(key, 0); }
-
     private static HashMap<String, Object> readFile(String filename) {
 
         HashMap<String, Object> map = new HashMap<>();
@@ -56,14 +43,14 @@ public class Config {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] content = line.split(": ");
-                if(content.length == 2) {
+                if (content.length == 2) {
                     String key = content[0];
                     String value = content[1].replaceAll("\"", "");
                     map.put(key, value);
                 }
             }
 
-        } catch(IOException exception) {
+        } catch (IOException exception) {
             exception.printStackTrace();
         }
 
@@ -77,6 +64,21 @@ public class Config {
 
     public static Config getDefault() {
         return getFile("config.yml");
+    }
+
+    public void printContent() {
+        for (String name : content.keySet()) {
+            String value = content.get(name).toString();
+            System.out.println(name + " => " + value);
+        }
+    }
+
+    public String getString(String key) {
+        return (String) content.getOrDefault(key, null);
+    }
+
+    public int getInteger(String key) {
+        return (int) content.getOrDefault(key, 0);
     }
 
 }

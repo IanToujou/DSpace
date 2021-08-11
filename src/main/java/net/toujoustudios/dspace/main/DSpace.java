@@ -1,12 +1,12 @@
 package net.toujoustudios.dspace.main;
 
+import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
+import net.toujoustudios.dspace.command.CommandManager;
 import net.toujoustudios.dspace.config.Config;
-import net.toujoustudios.dspace.log.LogLevel;
-import net.toujoustudios.dspace.log.Logger;
-import org.yaml.snakeyaml.Yaml;
+import net.toujoustudios.dspace.listener.SlashCommandListener;
 
 import javax.security.auth.login.LoginException;
 
@@ -19,10 +19,13 @@ import javax.security.auth.login.LoginException;
 public class DSpace {
 
     private JDABuilder builder;
+    private JDA jda;
+    private CommandManager commandManager;
 
     public void build() {
 
         Config config = Config.getDefault();
+        commandManager = new CommandManager();
 
         builder = JDABuilder.createDefault(config.getString("keys.token"));
 
@@ -31,15 +34,28 @@ public class DSpace {
 
         builder.enableIntents(GatewayIntent.GUILD_MEMBERS);
         builder.enableIntents(GatewayIntent.GUILD_PRESENCES);
+        builder.addEventListeners(new SlashCommandListener());
 
     }
 
     public void start() {
         try {
-            builder.build();
+            jda = builder.build();
         } catch (LoginException exception) {
             exception.printStackTrace();
         }
+    }
+
+    public JDABuilder getBuilder() {
+        return builder;
+    }
+
+    public JDA getJDA() {
+        return jda;
+    }
+
+    public CommandManager getCommandManager() {
+        return commandManager;
     }
 
 }
