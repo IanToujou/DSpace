@@ -41,6 +41,7 @@ public class DSpace {
     public void start() {
         try {
             jda = builder.build();
+            commandManager.registerCommands();
         } catch (LoginException exception) {
             exception.printStackTrace();
         }

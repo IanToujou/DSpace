@@ -2,6 +2,13 @@ package net.toujoustudios.dspace.command;
 
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
+import net.dv8tion.jda.api.interactions.commands.build.CommandData;
+import net.dv8tion.jda.api.interactions.commands.build.OptionData;
+import net.dv8tion.jda.api.requests.restaction.CommandListUpdateAction;
+import net.toujoustudios.dspace.command.list.general.HelpCommand;
+import net.toujoustudios.dspace.log.LogLevel;
+import net.toujoustudios.dspace.log.Logger;
+import net.toujoustudios.dspace.main.Main;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -18,13 +25,31 @@ public class CommandManager {
     private final List<ICommand> commands = new ArrayList<>();
 
     public CommandManager() {
-
+        this.addCommand(new HelpCommand());
     }
 
     private void addCommand(ICommand command) {
         boolean nameFound = this.commands.stream().anyMatch((it) -> it.getName().equalsIgnoreCase(command.getName()));
         if (nameFound) throw new IllegalArgumentException("A command with this name is already present.");
         commands.add(command);
+    }
+
+    @SuppressWarnings("all")
+    public void registerCommands() {
+
+        CommandListUpdateAction updateAction = Main.getBot().getJDA().updateCommands();
+
+        for (ICommand command : this.commands) {
+            CommandData commandData = new CommandData(command.getName(), command.getDescription());
+            for (OptionData data : command.getOptions()) {
+                commandData.addOptions(data);
+            }
+            updateAction.addCommands(commandData);
+        }
+
+        updateAction.queue();
+        Logger.log(LogLevel.INFORMATION, "Successfully registered " + commands.size() + " commands.");
+
     }
 
     public List<ICommand> getCommands() {

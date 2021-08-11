@@ -1,6 +1,7 @@
 package net.toujoustudios.dspace.command;
 
-import java.util.Arrays;
+import net.dv8tion.jda.api.interactions.commands.build.OptionData;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -10,11 +11,9 @@ public interface ICommand {
 
     String getName();
 
-    String getHelp();
+    String getDescription();
 
-    String getUsage();
-
-    boolean isNSFW();
+    List<OptionData> getOptions();
 
     CommandCategory getCategory();
 
