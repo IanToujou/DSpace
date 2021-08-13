@@ -21,4 +21,26 @@ public interface ICommand {
         return Collections.emptyList();
     }
 
+    default String getSyntax() {
+
+        StringBuilder builder = new StringBuilder();
+        builder.append(getName());
+
+        for(OptionData data : getOptions()) {
+            builder.append(" ");
+            if(data.isRequired()) {
+                builder.append("<");
+                builder.append(data.getName());
+                builder.append(">");
+            } else {
+                builder.append("[<");
+                builder.append(data.getName());
+                builder.append(">]");
+            }
+        }
+
+        return builder.toString();
+
+    }
+
 }
