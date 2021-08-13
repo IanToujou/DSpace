@@ -33,6 +33,7 @@ public class HelpCommand implements ICommand {
     }
 
     @Override
+    @SuppressWarnings("all")
     public void handle(CommandContext context) {
 
         List<OptionMapping> args = context.getArgs();
@@ -77,6 +78,7 @@ public class HelpCommand implements ICommand {
 
             embedBuilder.setTitle("**__ERROR__**");
             embedBuilder.setColor(ColorTools.getFromRGBString(config.getString("format.color.error")));
+            embedBuilder.setThumbnail("https://repo.toujoustudios.net/assets/dspace/icon_error.png");
             embedBuilder.setDescription(":x: The command syntax is not correct.\nPlease use **/" + getOptions() + "**");
             context.getEvent().replyEmbeds(embedBuilder.build()).queue();
             return;
@@ -90,6 +92,7 @@ public class HelpCommand implements ICommand {
 
             embedBuilder.setTitle("**__ERROR__**");
             embedBuilder.setColor(ColorTools.getFromRGBString(config.getString("format.color.error")));
+            embedBuilder.setThumbnail("https://repo.toujoustudios.net/assets/dspace/icon_error.png");
             embedBuilder.setDescription(":x: Nothing found for `" + search + "`.");
             context.getEvent().replyEmbeds(embedBuilder.build()).queue();
             return;

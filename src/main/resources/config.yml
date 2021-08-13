@@ -4,7 +4,7 @@ bot.version: "V1.0.0" # The version of the Discord bot.
 
 ### Formatting ###
 format.color.default: "59, 0, 122" # An RGB value for the default embed color.
-format.color.error: "255, 0, 0" # An RGB value for the error embed color.
+format.color.error: "255, 0, 48" # An RGB value for the error embed color.
 
 ### Keys ###
 keys.token: "" # The bot token.
