@@ -5,14 +5,16 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
+import net.dv8tion.jda.api.interactions.components.Button;
 import net.toujoustudios.dspace.color.ColorTools;
 import net.toujoustudios.dspace.command.CommandCategory;
 import net.toujoustudios.dspace.command.CommandContext;
 import net.toujoustudios.dspace.command.CommandManager;
 import net.toujoustudios.dspace.command.ICommand;
 import net.toujoustudios.dspace.config.Config;
+import net.toujoustudios.dspace.embed.EmbedTools;
+import net.toujoustudios.dspace.error.ErrorType;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +42,9 @@ public class HelpCommand implements ICommand {
         EmbedBuilder embedBuilder = new EmbedBuilder();
 
         embedBuilder.setColor(ColorTools.getFromRGBString(config.getString("format.color.default")));
-        embedBuilder.setTitle("**__DSpace Help__**");
+        embedBuilder.setTitle(":ringed_planet: **DSpace Help**");
+        embedBuilder.setDescription("Here is a full list of all bot commands and features.\nYou can also type `/help [<command>]` to look up a specific command and its usage.");
+        embedBuilder.setThumbnail(config.getString("assets.icon.search"));
 
         if(args.isEmpty()) {
 
@@ -48,7 +52,7 @@ public class HelpCommand implements ICommand {
 
             for (ICommand command : manager.getCommands()) {
                 if (command.getCategory() == CommandCategory.GENERAL) {
-                    builderGeneral.append("**/" + command.getName() + "** - " + command.getDescription() + "\n");
+                    builderGeneral.append("`/" + command.getName() + "` - " + command.getDescription() + "\n");
                 }
             }
 
@@ -69,37 +73,27 @@ public class HelpCommand implements ICommand {
                 embedBuilder.addField(":bookmark_tabs: Credits:", "IanToujou - Toujou Studios", false);
             }
 
-            context.getEvent().replyEmbeds(embedBuilder.build()).queue();
+            context.getEvent().replyEmbeds(embedBuilder.build())
+                    .addActionRow(Button.link(config.getString("link.invite"), "Invite"))
+                    .queue();
             return;
 
         }
 
         if (args.size() > 1) {
-
-            embedBuilder.setTitle("**__ERROR__**");
-            embedBuilder.setColor(ColorTools.getFromRGBString(config.getString("format.color.error")));
-            embedBuilder.setThumbnail("https://repo.toujoustudios.net/assets/dspace/icon_error.png");
-            embedBuilder.setDescription(":x: The command syntax is not correct.\nPlease use **/" + getOptions() + "**");
-            context.getEvent().replyEmbeds(embedBuilder.build()).queue();
+            context.getEvent().replyEmbeds(EmbedTools.buildError(ErrorType.COMMAND_INVALID_SYNTAX)).addActionRow(Button.link(config.getString("link.help"), "Help")).queue();
             return;
-
         }
 
         String search = args.get(0).getAsString();
         ICommand command = manager.getCommand(search);
 
         if (command == null) {
-
-            embedBuilder.setTitle("**__ERROR__**");
-            embedBuilder.setColor(ColorTools.getFromRGBString(config.getString("format.color.error")));
-            embedBuilder.setThumbnail("https://repo.toujoustudios.net/assets/dspace/icon_error.png");
-            embedBuilder.setDescription(":x: Nothing found for `" + search + "`.");
-            context.getEvent().replyEmbeds(embedBuilder.build()).queue();
+            context.getEvent().replyEmbeds(EmbedTools.buildError(ErrorType.COMMAND_INVALID_SEARCH)).addActionRow(Button.link(config.getString("link.help"), "Help")).queue();
             return;
-
         }
 
-        embedBuilder.setDescription("**Description:** " + command.getDescription() + "\n**Usage:** /" + command.getSyntax());
+        embedBuilder.setDescription("**Description:** " + command.getDescription() + "\n**Usage:** `/" + command.getSyntax() + "`");
         context.getEvent().replyEmbeds(embedBuilder.build()).queue();
 
     }
