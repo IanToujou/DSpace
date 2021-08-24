@@ -1,22 +1,18 @@
 package net.toujoustudios.dspace.command;
 
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.api.requests.restaction.CommandListUpdateAction;
 import net.toujoustudios.dspace.command.list.general.HelpCommand;
-import net.toujoustudios.dspace.config.Config;
 import net.toujoustudios.dspace.log.LogLevel;
 import net.toujoustudios.dspace.log.Logger;
 import net.toujoustudios.dspace.main.Main;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Pattern;
 
 /**
  * This file has been created by Ian Toujou.

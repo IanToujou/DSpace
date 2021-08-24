@@ -21,7 +21,7 @@ public class Config {
     public Config(String filename) {
 
         try {
-            InputStream inputStream = new FileInputStream("src/main/resources/" + filename);
+            InputStream inputStream = new FileInputStream(filename);
             Yaml yaml = new Yaml();
             content = yaml.load(inputStream);
         } catch (FileNotFoundException e) {

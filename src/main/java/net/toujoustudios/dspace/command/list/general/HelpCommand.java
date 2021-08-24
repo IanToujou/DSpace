@@ -46,7 +46,7 @@ public class HelpCommand implements ICommand {
         embedBuilder.setDescription("Here is a full list of all bot commands and features.\nYou can also type `/help [<command>]` to look up a specific command and its usage.");
         embedBuilder.setThumbnail(config.getString("assets.icon.search"));
 
-        if(args.isEmpty()) {
+        if (args.isEmpty()) {
 
             StringBuilder builderGeneral = new StringBuilder();
 
