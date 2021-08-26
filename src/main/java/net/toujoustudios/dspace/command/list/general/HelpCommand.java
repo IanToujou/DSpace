@@ -12,7 +12,7 @@ import net.toujoustudios.dspace.command.CommandContext;
 import net.toujoustudios.dspace.command.CommandManager;
 import net.toujoustudios.dspace.command.ICommand;
 import net.toujoustudios.dspace.config.Config;
-import net.toujoustudios.dspace.embed.EmbedTools;
+import net.toujoustudios.dspace.error.ErrorEmbed;
 import net.toujoustudios.dspace.error.ErrorType;
 
 import java.util.ArrayList;
@@ -81,7 +81,7 @@ public class HelpCommand implements ICommand {
         }
 
         if (args.size() > 1) {
-            context.getEvent().replyEmbeds(EmbedTools.buildError(ErrorType.COMMAND_INVALID_SYNTAX)).addActionRow(Button.link(config.getString("link.help"), "Help")).queue();
+            context.getEvent().replyEmbeds(ErrorEmbed.buildError(ErrorType.COMMAND_INVALID_SYNTAX)).addActionRow(Button.link(config.getString("link.help"), "Help")).queue();
             return;
         }
 
@@ -89,7 +89,7 @@ public class HelpCommand implements ICommand {
         ICommand command = manager.getCommand(search);
 
         if (command == null) {
-            context.getEvent().replyEmbeds(EmbedTools.buildError(ErrorType.COMMAND_INVALID_SEARCH)).addActionRow(Button.link(config.getString("link.help"), "Help")).queue();
+            context.getEvent().replyEmbeds(ErrorEmbed.buildError(ErrorType.COMMAND_INVALID_SEARCH)).addActionRow(Button.link(config.getString("link.help"), "Help")).queue();
             return;
         }
 

@@ -1,18 +1,17 @@
-package net.toujoustudios.dspace.embed;
+package net.toujoustudios.dspace.error;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.toujoustudios.dspace.color.ColorTools;
 import net.toujoustudios.dspace.config.Config;
-import net.toujoustudios.dspace.error.ErrorType;
 
 /**
  * This file has been created by Ian Toujou.
  * Project: DSpace
- * Date: 19/08/2021
- * Time: 01:01
+ * Date: 26/08/2021
+ * Time: 23:12
  */
-public class EmbedTools {
+public class ErrorEmbed {
 
     static Config config = Config.getDefault();
 
