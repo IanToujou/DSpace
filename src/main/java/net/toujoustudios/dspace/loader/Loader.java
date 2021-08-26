@@ -14,15 +14,14 @@ public class Loader {
     private static LoaderState state;
 
     public static void startLoading() {
-
         preInitialize();
         initialize();
         postInitialize();
-
     }
 
     private static void preInitialize() {
         new Config("config.yml");
+        new Config("keys.yml");
     }
 
     private static void initialize() {
